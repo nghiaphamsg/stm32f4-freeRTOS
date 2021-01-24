@@ -19,21 +19,20 @@
 ![Screenshot from 2021-01-23 23-55-24](https://user-images.githubusercontent.com/32474027/105630042-ecb8da00-5e89-11eb-8e04-cfb1a562f89d.png)
 
 ## 2. Task States
-- Running
+- **Running**
 When a task is actually executing it is said to be in the Running state. It is currently utilising the processor. If the processor on which the RTOS is running only has a single core then there can only be one task in the Running state at any given time.
 
-- Ready
+- **Ready**
 Ready tasks are those that are able to execute (they are not in the Blocked or Suspended state) but are not currently executing because a different task of equal or higher priority is already in the Running state.
 
-- Blocked
+- **Blocked**
 A task is said to be in the Blocked state if it is currently waiting for either a temporal or external event. For example, if a task calls vTaskDelay() it will block (be placed into the Blocked state) until the delay period has expired – a temporal event. Tasks can also block to wait for queue, semaphore, event group, notification or semaphore event. Tasks in the Blocked state normally have a ‘timeout’ period, after which the task will be timeout, and be unblocked, even if the event the task was waiting for has not occurred.
-
 Tasks in the Blocked state do not use any processing time and cannot be selected to enter the Running state.
 
-- Suspended
+- **Suspended**
 Like tasks that are in the Blocked state, tasks in the Suspended state cannot be selected to enter the Running state, but tasks in the Suspended state do not have a time out. Instead, tasks only enter or exit the Suspended state when explicitly commanded to do so through the vTaskSuspend() and xTaskResume() API calls respectively.
 
-## 3. Create Tasks
+## 3. Create Tasks and Scheduler
 - Create a new task and add it to the list of tasks that are ready to run.
 ```shell
 #include "task.h"
@@ -46,6 +45,7 @@ BaseType_t xTaskCreate(  TaskFunction_t pvTaskCode,
                          TaskHandle_t *pxCreatedTask
                        );
 ```
+![Screenshot from 2021-01-24 20-01-05](https://user-images.githubusercontent.com/32474027/105630348-022f0380-5e8c-11eb-9e29-2532ace77e2a.png)
 
 - Starts the RTOS scheduler. After calling the RTOS kernel has control over which tasks are executed and when. The idle task and optionally the timer daemon task are created automatically when the RTOS scheduler is started.
 
@@ -53,7 +53,9 @@ BaseType_t xTaskCreate(  TaskFunction_t pvTaskCode,
 #include "task.h"
 void vTaskStartScheduler( void );
 ```
+![Screenshot from 2021-01-24 19-59-07](https://user-images.githubusercontent.com/32474027/105630358-1410a680-5e8c-11eb-8454-395451468c35.png)
 
-
-
+## 4. Running
+- Right click > Debug as > C/C++ Application
+![Screenshot from 2021-01-24 21-32-12](https://user-images.githubusercontent.com/32474027/105630535-335c0380-5e8d-11eb-90f5-4add963bbf2a.png)
 
