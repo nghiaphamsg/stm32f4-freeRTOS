@@ -56,6 +56,51 @@ void vTaskStartScheduler( void );
 ![Screenshot from 2021-01-24 19-59-07](https://user-images.githubusercontent.com/32474027/105630358-1410a680-5e8c-11eb-8454-395451468c35.png)
 
 ## 4. Running
+### 1. Setup Semihosting on System Workbench
+- Step 1: Linker argument settings
+
+Properties > C/C++ Build > Settings > MCU GCC Linker > Miscellaneous > Linker
+flags (`-specs=rdimon.specs -lc -lrdimon`) > Apply > OK 
+
+- Step 2: Debug configuration of your application
+
+Debug as > Debug configurations > Startup tab > Run commands (`monitor arm semihosting enable`) >
+Apply > Close
+
+- Step 3: Configure in `main.c` use below codes
+```shell
+#define USE_SEMIHOSTING
+extern void initialise_monitor_handles();
+initialise_monitor_handles();
+```
+- Step 4: `syscalls.c` > properties > check "Exclude resource from build"
+
 - Right click > Debug as > C/C++ Application
 ![Screenshot from 2021-01-24 21-32-12](https://user-images.githubusercontent.com/32474027/105630535-335c0380-5e8d-11eb-90f5-4add963bbf2a.png)
 
+### 2. Debug via USART2
+- Step 1: Install minicom (host machine) and setup port `/dev/ttyACM0`
+```
+#Plugged in cable in to host
+dmesg | grep /dev/tty
+```
+
+```shell
+sudo apt-get install -y minicom
+sudo minicom -s
+```
+![Screenshot from 2021-01-26 21-20-07](https://user-images.githubusercontent.com/32474027/105845190-b744f580-601d-11eb-85f0-55ec15891dc5.png)
+
+- Step 2: Configure in `main.c` source
+```shell
+#define USE_USART_DEBUG
+
+# Macro for forcing a context switch
+taskYIELD() 
+```
+USART2 configuration parameters (BaudRate: 115200, Word: 8, Stop bits: 1, Parity: none)
+
+- Step 3: Testing
+
+Right click > Run as > C/C++ Application
+![Screenshot from 2021-01-26 21-25-44](https://user-images.githubusercontent.com/32474027/105845220-c461e480-601d-11eb-82d4-6f7852e11e10.png)
