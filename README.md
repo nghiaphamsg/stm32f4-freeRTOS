@@ -17,7 +17,7 @@
 
 ## 3. Prepare
 
-| Sortware              | Hardware               |       
+| Software              | Hardware               |       
 |-----------------------|------------------------|
 | [OpenSTM32 System Workbench](https://www.openstm32.org/Installing%2BSystem%2BWorkbench%2Bfor%2BSTM32%2Bfrom%2BEclipse)   | [Board NUCLEO-F446RE](https://www.st.com/en/evaluation-tools/nucleo-f446re.html) |
 | [SEGGER SystemView](https://www.segger.com/downloads/systemview/)  | Cable |
