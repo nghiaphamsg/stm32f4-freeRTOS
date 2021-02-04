@@ -71,27 +71,27 @@
 
 ```
 Third_Party
+└── SEGGER
+		├── Config
+		│   ├── Global.h
+		│   ├── SEGGER_RTT_Conf.h
+		│   ├── SEGGER_SYSVIEW_Conf.h
+		│   └── SEGGER_SYSVIEW_Config_FreeRTOS.c
+		├── OS
+		│   ├── SEGGER_SYSVIEW_FreeRTOS.c
+		│   └── SEGGER_SYSVIEW_FreeRTOS.h
+		├── Patch
+		│   └── FreeRTOSv10_1
+		│       └── FreeRTOSV10_Core.patch
 		└── SEGGER
-			 ├── Config
-			 │   ├── Global.h
-			 │   ├── SEGGER_RTT_Conf.h
-			 │   ├── SEGGER_SYSVIEW_Conf.h
-			 │   └── SEGGER_SYSVIEW_Config_FreeRTOS.c
-			 ├── OS
-			 │   ├── SEGGER_SYSVIEW_FreeRTOS.c
-			 │   └── SEGGER_SYSVIEW_FreeRTOS.h
-			 ├── Patch
-			 │   └── FreeRTOSv10_1
-			 │       └── FreeRTOSV10_Core.patch
-			 └── SEGGER
-					├── SEGGER.h
-					├── SEGGER_RTT_ASM_ARMv7M.S
-					├── SEGGER_RTT.c
-					├── SEGGER_RTT.h
-					├── SEGGER_SYSVIEW.c
-					├── SEGGER_SYSVIEW_ConfDefaults.h
-					├── SEGGER_SYSVIEW.h
-					└── SEGGER_SYSVIEW_Int.h
+		├── SEGGER.h
+		├── SEGGER_RTT_ASM_ARMv7M.S
+		├── SEGGER_RTT.c
+		├── SEGGER_RTT.h
+		├── SEGGER_SYSVIEW.c
+		├── SEGGER_SYSVIEW_ConfDefaults.h
+		├── SEGGER_SYSVIEW.h
+		└── SEGGER_SYSVIEW_Int.h
 ```
 
 
