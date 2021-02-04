@@ -35,11 +35,11 @@
 ### Step 1: Download
 - Download SW here:
 ```
-	https://www.segger.com/downloads/systemview/
+https://www.segger.com/downloads/systemview/
 ````
 - Download targets sources:
 ```
-	https://www.segger.com/downloads/systemview/SystemView_Src_V320.zip.sig
+https://www.segger.com/downloads/systemview/SystemView_Src_V320.zip.sig
 ```
 ### Step 2: Including SEGGER SystemView in the application
 - Copy below to `/Config`
@@ -72,37 +72,93 @@
 ```
 Third_Party
 └── SEGGER
-		├── Config
-		│   ├── Global.h
-		│   ├── SEGGER_RTT_Conf.h
-		│   ├── SEGGER_SYSVIEW_Conf.h
-		│   └── SEGGER_SYSVIEW_Config_FreeRTOS.c
-		├── OS
-		│   ├── SEGGER_SYSVIEW_FreeRTOS.c
-		│   └── SEGGER_SYSVIEW_FreeRTOS.h
-		├── Patch
-		│   └── FreeRTOSv10_1
-		│       └── FreeRTOSV10_Core.patch
-		└── SEGGER
-		├── SEGGER.h
-		├── SEGGER_RTT_ASM_ARMv7M.S
-		├── SEGGER_RTT.c
-		├── SEGGER_RTT.h
-		├── SEGGER_SYSVIEW.c
-		├── SEGGER_SYSVIEW_ConfDefaults.h
-		├── SEGGER_SYSVIEW.h
-		└── SEGGER_SYSVIEW_Int.h
+	├── Config
+	│   ├── Global.h
+	│   ├── SEGGER_RTT_Conf.h
+	│   ├── SEGGER_SYSVIEW_Conf.h
+	│   └── SEGGER_SYSVIEW_Config_FreeRTOS.c
+	├── OS
+	│   ├── SEGGER_SYSVIEW_FreeRTOS.c
+	│   └── SEGGER_SYSVIEW_FreeRTOS.h
+	├── Patch
+	│   └── FreeRTOSv10_1
+	│       └── FreeRTOSV10_Core.patch
+	└── SEGGER
+	├── SEGGER.h
+	├── SEGGER_RTT_ASM_ARMv7M.S
+	├── SEGGER_RTT.c
+	├── SEGGER_RTT.h
+	├── SEGGER_SYSVIEW.c
+	├── SEGGER_SYSVIEW_ConfDefaults.h
+	├── SEGGER_SYSVIEW.h
+	└── SEGGER_SYSVIEW_Int.h
 ```
 
+### Step 3: Patching FreeRTOS files
+- You need to patch some of the FreeRTOS files with patch file given by SEGGER systemView
+- FreeRTOS folder > right click > Team > Apply patch > include patch file > finish
+**Note:** Apply to OpenSTM32 System Workbench
 
+### Step 4: Reconfigure FreeRTOSConfig.h
+- `SEGGER_SYSVIEW_FreeRTOS.h` has to be included at the end of `FreeRTOSConfig.h` or obove every include of `FreeRTOS.h`
+- Include the below macros
+```
+#define INCLUDE_xTaskGetIdleTaskHandle 1 
+#define INCLUDE_pxTaskGetStackTask 1
+```
 
+### Step 5: MCU and Project specific settings
+- `SEGGER_SYSVIEW_ConfDefaults.h`: Mention which processor core your MCU
+```
+#Line 123: SEGGER_SYSVIEW_CORE_OTHER → SEGGER_SYSVIEW_CORE_CM3
+```
+- Buffer size configuration in (`SEGGER_SYSVIEW_RTT_BUFFER_SIZE	 1024 * 8`)
+- Configure the some of the app info in `SEGGER_SYSVIEW_Config_FreeRTOS.c`
+```
+#define SYSVIEW_APP_NAME        "FreeRTOS Hello-World"
+#define SYSVIEW_DEVICE_NAME     "STM32F44CRE"
+#define SYSVIEW_RAM_BASE        (0x20000000)
+```
 
+### Step 6: Enable the ARM Cortex Mx Cycle Counter (default disable)
+- This is required to maintain the time stamp information of application events. SystemView will use the Cycle counter register value to maintain the time stamp information of events.
+- `DWT_CYCCNT` register of ARM Cortex Mx processor stores number of clock cycles that have happened after the reset of the processor
+```
+/* Enable cycles counter in DWT_CYCCNT regiter */
+DWT->CTRL |= (1 << 0);
+```
 
+### Step 7: Start the recording of events
+- To start the recordings of your FreeTOS application, call the below SEGGER APIs:
+```
+SEGGER_SYSVIEW_Conf();
+SEGGER_SYSVIEW_Start();
+```
 
+### Step 8: Compile , Flash and Debug
 
+## 4. Collect The Recorded Data
 
+### 1. Single-shot recording
+- Get the SystemView RTT buffer address and the number of bytes used. `(Normally _SEGGER_RTT.aUp[1].pBuffer and _SEGGER_RTT.aUp[1].WrOff)`
+- Take the memory dump to a file
+- Save the file with `.SVDat` extension
+![Screenshot from 2021-01-27 22-56-52](https://user-images.githubusercontent.com/32474027/106900756-4054de80-673a-11eb-981a-d74d103bbb10.png)
 
+- Use that file to load in to SystemView software to analyze the events
+![Screenshot from 2021-01-27 22-57-57](https://user-images.githubusercontent.com/32474027/106900781-4b0f7380-673a-11eb-85f0-c091810d6e62.png)
 
+![Screenshot from 2021-01-27 23-02-10](https://user-images.githubusercontent.com/32474027/106900831-58c4f900-673a-11eb-88be-001c3f350b48.png)
 
+### 2. Continuous recording (only Windows host)
+- Flash the J-link firmware on your board (This step basically removes the stlink frimware present in your board with Jlink firmware)
+```
+https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack
+https://www.segger.com/downloads/jlink#STLink_Reflash
+```
+- Open the SystemView software
+- Go to Target->Start recording
+- Mention “Target Device” and RTT address details and click “OK”
+- Software will record the events and display
 
 
