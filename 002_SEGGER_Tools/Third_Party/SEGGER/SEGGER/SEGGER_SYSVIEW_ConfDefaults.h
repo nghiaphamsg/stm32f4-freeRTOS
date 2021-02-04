@@ -120,7 +120,7 @@ extern "C" {
   #endif
 
   #ifndef   SEGGER_SYSVIEW_CORE
-    #define SEGGER_SYSVIEW_CORE SEGGER_SYSVIEW_CORE_OTHER
+    #define SEGGER_SYSVIEW_CORE SEGGER_SYSVIEW_CORE_CM3
   #endif
 #endif
 
@@ -265,7 +265,7 @@ extern "C" {
 *    1024
 */
 #ifndef   SEGGER_SYSVIEW_RTT_BUFFER_SIZE
-  #define SEGGER_SYSVIEW_RTT_BUFFER_SIZE          1024
+  #define SEGGER_SYSVIEW_RTT_BUFFER_SIZE          (1024 * 8)
 #endif
 
 /*********************************************************************

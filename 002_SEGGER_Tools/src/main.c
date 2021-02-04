@@ -46,6 +46,9 @@ int main(void)
 
 #endif  /* USE_SEMIHOSTING */
 
+  /* Enable cycles counter in DWT_CYCCNT regiter */
+  DWT->CTRL |= (1 << 0);
+
   /* Resets the RCC clock configuration to the default reset state */
   /* HSI On, HSE & PLL Off */
   RCC_DeInit();
@@ -59,6 +62,10 @@ int main(void)
 
   sprintf(msg, "App is running\r\n");
   sendData(msg);
+
+  /* Start the recording of events */
+  SEGGER_SYSVIEW_Conf();
+  SEGGER_SYSVIEW_Start();
 
   /* Create two tasks */
   xTaskCreate(vTask1_Handler, "Task-1", configMINIMAL_STACK_SIZE, NULL, 2, &xTaskHandler1);

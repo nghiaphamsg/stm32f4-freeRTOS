@@ -1,6 +1,6 @@
 /*
- * FreeRTOS V202012.00
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.1.1
+ * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -89,6 +89,10 @@ to exclude the API function. */
 #define INCLUDE_vTaskDelayUntil			1
 #define INCLUDE_vTaskDelay				1
 
+/* For SEGGER SystemView */
+#define INCLUDE_xTaskGetIdleTaskHandle	1
+#define INCLUDE_pxTaskGetStackTask		1
+
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
 	/* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
@@ -123,6 +127,9 @@ standard names. */
 #define vPortSVCHandler SVC_Handler
 #define xPortPendSVHandler PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
+
+/* Include SEGGER SystemView header for FreeRTOS */
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
 
 #endif /* FREERTOS_CONFIG_H */
 
