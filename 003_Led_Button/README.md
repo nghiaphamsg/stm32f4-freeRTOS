@@ -1,4 +1,4 @@
-<h1> Button & Led Task With Interrupt </h1>
+<h1> Button & Led Task Without Interrupt </h1>
 
 ## Exercise
 - Write a program to create 2 tasks with same priorities
